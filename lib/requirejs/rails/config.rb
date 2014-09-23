@@ -31,6 +31,7 @@ module Requirejs::Rails
 
       self.run_config_whitelist = %w{
         baseUrl
+        bundles
         callback
         catchError
         config
