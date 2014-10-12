@@ -39,11 +39,13 @@ module RequirejsHelper
         end
 
         if Rails.application.config.assets.digest
-          modules = requirejs.build_config['modules'].map { |m| requirejs.module_name_for m }
+          modules = requirejs.build_config['modules']
 
           # Generate digestified paths from the modules spec
           paths = {}
-          modules.each { |m| paths[m] = javascript_path(m).sub /\.js$/, '' }
+          modules.each do |m| 
+            paths[requirejs.module_name_for(m)] = javascript_path(requirejs.asset_name_for(m)).sub(/\.js$/, '')
+          end
 
           if run_config.has_key? 'paths'
             # Add paths for assets specified by full URL (on a CDN)

@@ -144,6 +144,15 @@ module Requirejs::Rails
       end
     end
 
+    def asset_name_for(mod)
+      case self.loader
+      when :almond
+        return mod['include']
+      when :requirejs
+        return self[:build_config]['paths'].try(:[], mod['name']).presence || mod['name']
+      end
+    end
+
     def get_binding
       return binding()
     end
