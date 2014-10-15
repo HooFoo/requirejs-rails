@@ -45,6 +45,7 @@ module Requirejs::Rails
         priority
         scriptType
         shim
+        stubModules
         urlArgs
         waitSeconds
         xhtml
@@ -84,6 +85,7 @@ module Requirejs::Rails
         shim
         skipModuleInsertion
         skipPragmas
+        stubModules
         uglify
         uglify2
         useStrict

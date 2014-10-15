@@ -18,6 +18,11 @@ module Requirejs
         # environment-specific configuration can be injected into the user configuration file
         Engine.process_user_config_file(app, config)
 
+        # Process bundle.json files in production environment
+        if app.config.assets.digest
+          Engine.process_bundle_manifests(app, config)
+        end
+
         config.assets.precompile += config.requirejs.precompile
 
         # Check for the `requirejs:precompile:all` top-level Rake task and run the following initialization code.
@@ -99,6 +104,32 @@ module Requirejs
         else
           config.requirejs.user_config = YAML.load(yaml_file_contents)
         end
+      end
+
+      def process_bundle_manifests(app, config)
+        base_dir = File.join(app.root, 'app', 'ui')
+        base_path = Pathname.new(base_dir)
+        modules = []
+        bundles = {}
+        Dir.glob(File.join(base_dir, '**', '*bundle.json')).each do |absolute_path|
+          bundle_config = JSON.parse(File.read(absolute_path))
+          bundle_dir = Pathname.new(absolute_path).relative_path_from(base_path).dirname
+          bundle_name = bundle_config['name']
+          includes = bundle_config['include'].map do |include_name|
+            include_name = include_name.split('!')
+            include_path = include_name.pop
+            if include_path.starts_with?('.')
+              include_path = bundle_dir.join(include_path)
+            end
+            (include_name + [include_path]).join('!')
+          end
+
+          bundles[bundle_name] = includes
+          modules << { 'name' => bundle_name, 'include' => includes, 'create' => true }
+        end
+
+        config.requirejs.user_config['bundles'] = bundles
+        config.requirejs.user_config['modules'] = modules
       end
     end # class Engine
   end

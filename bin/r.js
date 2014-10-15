@@ -22859,6 +22859,11 @@ define('parse', ['./esprimaAdapter', 'lang'], function (esprima, lang) {
      * define/require.def calls are found.
      */
     function parse(moduleName, fileName, fileContents, options) {
+        // Quick dirty customization
+        // Do not parse/include dependencies
+        return null;
+
+
         options = options || {};
 
         //Set up source input
