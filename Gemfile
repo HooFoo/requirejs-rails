@@ -11,6 +11,7 @@ group :development, :test do
 
   # ExecJS is used by our tests
   gem "execjs"
+  gem "erubis"
 end
 
 # Declare any dependencies that are still in development here instead of in

@@ -107,6 +107,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  erubis
   execjs
   jquery-rails
   rails (>= 3.1.1)
@@ -114,4 +115,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
